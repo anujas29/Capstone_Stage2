@@ -73,9 +73,8 @@ public class DetailActivity extends Fragment implements LoaderManager.LoaderCall
 
     Uri mUrl;
     String UrlStr;
-    private int mId=-1;
+    private int mId = -1;
     private boolean favorite_flag;
-
 
 
     @Override
@@ -83,6 +82,7 @@ public class DetailActivity extends Fragment implements LoaderManager.LoaderCall
         setHasOptionsMenu(true);
         super.onCreate(savedInstanceState);
     }
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         Log.d(TAG, "inside onActivityCreated.......");
@@ -92,11 +92,11 @@ public class DetailActivity extends Fragment implements LoaderManager.LoaderCall
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        if(mUrl!= null){
-            Log.d(TAG,"inside onCreateLoader......");
-            return new CursorLoader(getActivity(),mUrl,
-                    null,null,null,null);
-        }else{
+        if (mUrl != null) {
+            Log.d(TAG, "inside onCreateLoader......");
+            return new CursorLoader(getActivity(), mUrl,
+                    null, null, null, null);
+        } else {
             return null;
         }
     }
@@ -104,13 +104,13 @@ public class DetailActivity extends Fragment implements LoaderManager.LoaderCall
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 
-        if(data != null && data.moveToFirst()){
-            Log.d(TAG, "Inside onLoadFinished...... cursor data"+data);
+        if (data != null && data.moveToFirst()) {
+            Log.d(TAG, "Inside onLoadFinished...... cursor data" + data);
             UrlStr = data.getString(data.getColumnIndex(ProductContract.ProductEntry.COLUMN_URL));
             mTitle.setText(data.getString(data.getColumnIndex(ProductContract.ProductEntry.COLUMN_TITLE)));
             mSite.setText(data.getString(data.getColumnIndex(ProductContract.ProductEntry.COLUMN_SITE)));
             String datestr = data.getString(data.getColumnIndex(ProductContract.ProductEntry.COLUMN_LASTCHANGE));
-            String modifiedDate = datestr.substring(0,10);
+            String modifiedDate = datestr.substring(0, 10);
             mDate.setText(modifiedDate);
             mDescription.setText(data.getString(data.getColumnIndex(ProductContract.ProductEntry.COLUMN_DESCRIPTION)));
             mPrice.setText(data.getString(data.getColumnIndex(ProductContract.ProductEntry.COLUMN_PRICE)));
@@ -118,18 +118,17 @@ public class DetailActivity extends Fragment implements LoaderManager.LoaderCall
             mPrice_offer.setText(data.getString(data.getColumnIndex(ProductContract.ProductEntry.COLUMN_OFFER)));
             mOfferCurrency.setText(data.getString(data.getColumnIndex(ProductContract.ProductEntry.COLUMN_CURRENCY)));
 
-            if(data.getString(data.getColumnIndex(ProductContract.ProductEntry.COLUMN_IMAGE))!= null ){
+            if (data.getString(data.getColumnIndex(ProductContract.ProductEntry.COLUMN_IMAGE)) != null) {
                 Picasso.with(getActivity()).load(
                         data.getString(data.getColumnIndex(ProductContract.ProductEntry.COLUMN_IMAGE)))
                         .fit()
                         .into(mBackdropImage);
-            }else{
+            } else {
                 mBackdropImage.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.sale_default));
             }
             mCollapsingToolbarLayout.setTitle(data.getString(data.getColumnIndex(ProductContract.ProductEntry.COLUMN_TITLE)));
-            favorite_flag = data.getInt(data.getColumnIndex(ProductContract.ProductEntry.COLUMN_FAV))==1;
-            if(favorite_flag)
-            {
+            favorite_flag = data.getInt(data.getColumnIndex(ProductContract.ProductEntry.COLUMN_FAV)) == 1;
+            if (favorite_flag) {
                 mFabButton.setImageResource(ic_favorite_black);
             }
             mId = data.getInt(data.getColumnIndex(ProductContract.ProductEntry._ID));
@@ -140,7 +139,7 @@ public class DetailActivity extends Fragment implements LoaderManager.LoaderCall
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        Log.e(TAG,"Inside onLoaderReset........");
+        Log.e(TAG, "Inside onLoaderReset........");
         getLoaderManager().restartLoader(CURSOR_LOADER, null, this);
     }
 
@@ -153,10 +152,10 @@ public class DetailActivity extends Fragment implements LoaderManager.LoaderCall
         if (getActivity().getClass().getSimpleName().equals("DetailFragment")) {
             mUrl = getActivity().getIntent().getData();
         }
-        Log.d(TAG,"Inside onCreateView Url value = "+ mUrl.toString());
+        Log.d(TAG, "Inside onCreateView Url value = " + mUrl.toString());
 
-        ((AppCompatActivity)getActivity()).setSupportActionBar(mToolbar);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(!MainActivity.isTablet);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(!MainActivity.isTablet);
         return rootView;
     }
 
@@ -167,16 +166,16 @@ public class DetailActivity extends Fragment implements LoaderManager.LoaderCall
         ContentResolver contentResolver = getActivity().getContentResolver();
         if (favorite_flag) {
             Log.d(TAG, "Remove from favourite....");
-            cv.put(ProductContract.ProductEntry.COLUMN_FAV,0);
+            cv.put(ProductContract.ProductEntry.COLUMN_FAV, 0);
             mFabButton.setImageResource(ic_favorite_white);
-            Toast.makeText(getActivity(),getString(R.string.RemoveFromfab),Toast.LENGTH_LONG).show();
-            favorite_flag=false;
+            Toast.makeText(getActivity(), getString(R.string.RemoveFromfab), Toast.LENGTH_LONG).show();
+            favorite_flag = false;
         } else {
             Log.d(TAG, "Mark favourite....");
             cv.put(ProductContract.ProductEntry.COLUMN_FAV, 1);
             mFabButton.setImageResource(ic_favorite_black);
-            Toast.makeText(getActivity(),getString(R.string.Addedasfab),Toast.LENGTH_LONG).show();
-            favorite_flag=true;
+            Toast.makeText(getActivity(), getString(R.string.Addedasfab), Toast.LENGTH_LONG).show();
+            favorite_flag = true;
         }
 
         contentResolver.update(ProductContract.ProductEntry.getUriWithId(mId),
@@ -186,17 +185,17 @@ public class DetailActivity extends Fragment implements LoaderManager.LoaderCall
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.share,menu);
+        inflater.inflate(R.menu.share, menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.d(TAG, "Inside onOptionsItemSelected....."+item.getItemId());
+        Log.d(TAG, "Inside onOptionsItemSelected....." + item.getItemId());
         int id = item.getItemId();
-        switch (id){
-            case R.id.share_item:{
+        switch (id) {
+            case R.id.share_item: {
                 Intent intent = new Intent(Intent.ACTION_SEND);
-                intent.putExtra(Intent.EXTRA_TEXT,UrlStr);
+                intent.putExtra(Intent.EXTRA_TEXT, UrlStr);
                 intent.setType("text/plain");
                 startActivity(intent);
                 break;

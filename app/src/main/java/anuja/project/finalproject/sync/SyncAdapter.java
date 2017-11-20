@@ -40,7 +40,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     public static final int SYNC_INTERVAL = 60 * 60 * 24;
     private static final String ACCOUNT_TYPE = "com.anuja.finalproject";
     private static final String ACCOUNT_NAME = "Default Account";
-    String location="";
+    String location = "";
 
 
     public SyncAdapter(Context context, boolean autoInitialize) {
@@ -61,13 +61,12 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         AccountManager accountManager = (AccountManager) context.getSystemService(Context.ACCOUNT_SERVICE);
         Account newAccount = new Account(
                 context.getString(R.string.app_name), ACCOUNT_TYPE);
-        if ( null == accountManager.getPassword(newAccount) )
-        {
+        if (null == accountManager.getPassword(newAccount)) {
             if (!accountManager.addAccountExplicitly(newAccount, "", null)) {
                 return null;
             }
         }
-        Log.e(TAG, "Account created...."+newAccount);
+        Log.e(TAG, "Account created...." + newAccount);
         return newAccount;
     }
 
@@ -76,14 +75,14 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         Bundle bundle = new Bundle();
         bundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
         bundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
-        ContentResolver.requestSync(createSyncAccount(context),ProductContract.AUTHORITY, bundle);
+        ContentResolver.requestSync(createSyncAccount(context), ProductContract.AUTHORITY, bundle);
     }
 
     public static void initializeAdapter(Context context) {
         Log.e(TAG, " initializeAdapter....");
         Account ACCOUNT = createSyncAccount(context);
-        ContentResolver.setSyncAutomatically(ACCOUNT, ProductContract.AUTHORITY,true);//Set whether or not the provider is synced when it receives a network tickle.
-        ContentResolver.addPeriodicSync(ACCOUNT,ProductContract.AUTHORITY,Bundle.EMPTY,SYNC_INTERVAL);//This schedules your sync adapter to run after a certain amount of time
+        ContentResolver.setSyncAutomatically(ACCOUNT, ProductContract.AUTHORITY, true);//Set whether or not the provider is synced when it receives a network tickle.
+        ContentResolver.addPeriodicSync(ACCOUNT, ProductContract.AUTHORITY, Bundle.EMPTY, SYNC_INTERVAL);//This schedules your sync adapter to run after a certain amount of time
     }
 
     /**
@@ -106,7 +105,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         Log.e(TAG, "Inside onPerformSync Delete Old Data " + deleted + " deleted");
 
         int i;
-        for( i=0 ; i<2 ; i++) {
+        for (i = 0; i < 2; i++) {
 
             HttpURLConnection urlConnection = null;
             BufferedReader bufferedReader = null;
@@ -114,15 +113,14 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             String jsonStr = null;
             StringBuilder lines = new StringBuilder();
 
-            if(i==1)
-            {
+            if (i == 1) {
                 location = FindLocation.Location(mContext);
-                Log.e(TAG, "Local Location..... = "+location);
+                Log.e(TAG, "Local Location..... = " + location);
             }
 
             try {
 
-                if(i==0) {
+                if (i == 0) {
                     Uri builtUri = Uri.parse(Webhose.BASE_URL).buildUpon()
                             .appendQueryParameter(Webhose.TOKEN, Webhose.API_KEY)
                             .appendQueryParameter(Webhose.FORMAT, Webhose.FORMAT_VALUE)
@@ -136,16 +134,14 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                     urlConnection = (HttpURLConnection) url.openConnection();
                     urlConnection.setRequestMethod("GET");
                     urlConnection.connect();
-                }
-                else
-                {
+                } else {
                     Uri builtUri = Uri.parse(Webhose.BASE_URL).buildUpon()
                             .appendQueryParameter(Webhose.TOKEN, Webhose.API_KEY)
                             .appendQueryParameter(Webhose.FORMAT, Webhose.FORMAT_VALUE)
                             .appendQueryParameter(Webhose.QUERY, Webhose.QUERY_VALUE)
                             .appendQueryParameter(Webhose.ON_SALE, Webhose.ON_SALE_VALUE)
                             .appendQueryParameter(Webhose.SIZE, Webhose.SIZE_VALUE)
-                            .appendQueryParameter(Webhose.COUNTRY,location.toUpperCase())
+                            .appendQueryParameter(Webhose.COUNTRY, location.toUpperCase())
                             .build();
 
                     Log.e(TAG, "inside else Built URI :::: " + builtUri.toString());
@@ -171,7 +167,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 Log.e(TAG, type + " ---- " + jsonStr);
 
                 //fetch data from server and store in local data
-                fetchJsonAndSave(jsonStr,i);
+                fetchJsonAndSave(jsonStr, i);
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -194,12 +190,12 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
     }
 
-    private int deleteOldDataFromDatabase(){
+    private int deleteOldDataFromDatabase() {
         //Delete old date except fav
         return mContext.getContentResolver().delete(
                 ProductContract.ProductEntry.CONTENT_URI
-                , ProductContract.ProductEntry.COLUMN_FAV+" = ?"
-                ,new String[]{String.valueOf(0)});
+                , ProductContract.ProductEntry.COLUMN_FAV + " = ?"
+                , new String[]{String.valueOf(0)});
     }
 
     private void fetchJsonAndSave(String jsonStr, int i) {
@@ -229,36 +225,36 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
                     ContentValues Values = new ContentValues();
 
-                    Values.put(ProductContract.ProductEntry.COLUMN_UUID,productModel.mUUID);
-                    Values.put(ProductContract.ProductEntry.COLUMN_URL,productModel.mUrl);
-                    Values.put(ProductContract.ProductEntry.COLUMN_SITE,productModel.mSite);
-                    Values.put(ProductContract.ProductEntry.COLUMN_TITLE,productModel.mTitle);
-                    Values.put(ProductContract.ProductEntry.COLUMN_NAME,productModel.mName);
-                    Values.put(ProductContract.ProductEntry.COLUMN_DESCRIPTION,productModel.mDescription);
-                    Values.put(ProductContract.ProductEntry.COLUMN_LASTCHANGE,productModel.mLastChange);
-                    Values.put(ProductContract.ProductEntry.COLUMN_PRICE,productModel.mPrice);
-                    Values.put(ProductContract.ProductEntry.COLUMN_CURRENCY,productModel.mCurrency);
-                    Values.put(ProductContract.ProductEntry.COLUMN_OFFER,productModel.mOffer);
-                    Values.put(ProductContract.ProductEntry.COLUMN_IMAGE,jsonArray.getString(0));
+                    Values.put(ProductContract.ProductEntry.COLUMN_UUID, productModel.mUUID);
+                    Values.put(ProductContract.ProductEntry.COLUMN_URL, productModel.mUrl);
+                    Values.put(ProductContract.ProductEntry.COLUMN_SITE, productModel.mSite);
+                    Values.put(ProductContract.ProductEntry.COLUMN_TITLE, productModel.mTitle);
+                    Values.put(ProductContract.ProductEntry.COLUMN_NAME, productModel.mName);
+                    Values.put(ProductContract.ProductEntry.COLUMN_DESCRIPTION, productModel.mDescription);
+                    Values.put(ProductContract.ProductEntry.COLUMN_LASTCHANGE, productModel.mLastChange);
+                    Values.put(ProductContract.ProductEntry.COLUMN_PRICE, productModel.mPrice);
+                    Values.put(ProductContract.ProductEntry.COLUMN_CURRENCY, productModel.mCurrency);
+                    Values.put(ProductContract.ProductEntry.COLUMN_OFFER, productModel.mOffer);
+                    Values.put(ProductContract.ProductEntry.COLUMN_IMAGE, jsonArray.getString(0));
 
-                    if(i==0){
-                        Values.put(ProductContract.ProductEntry.COLUMN_GLOBAL_SALE,1);
-                    }else if(i == 1){
-                        Values.put(ProductContract.ProductEntry.COLUMN_LOCAL_SALE,1);
+                    if (i == 0) {
+                        Values.put(ProductContract.ProductEntry.COLUMN_GLOBAL_SALE, 1);
+                    } else if (i == 1) {
+                        Values.put(ProductContract.ProductEntry.COLUMN_LOCAL_SALE, 1);
                     }
 
                     contentvalue_vector.add(Values);
                 }
 
-                int inserted =0;
-                if(contentvalue_vector.size() > 0){
+                int inserted = 0;
+                if (contentvalue_vector.size() > 0) {
                     ContentValues[] cvArray = new ContentValues[contentvalue_vector.size()];
                     contentvalue_vector.toArray(cvArray);
 
                     //insert new data
-                    inserted=mContext.getContentResolver().bulkInsert(
+                    inserted = mContext.getContentResolver().bulkInsert(
                             ProductContract.ProductEntry.CONTENT_URI
-                            ,cvArray);
+                            , cvArray);
 
                     Log.e(TAG, "SyncAdapter Completed. " + inserted + " Data Inserted ");
                 }

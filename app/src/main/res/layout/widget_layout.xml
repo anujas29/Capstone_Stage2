@@ -5,11 +5,13 @@
     android:layout_height="match_parent"
     android:padding="@dimen/layout_padding"
     android:orientation="vertical">
+
     <FrameLayout
         android:id="@+id/widget_header"
         android:layout_width="match_parent"
         android:layout_height="@dimen/widget_frame_height"
         android:background="@color/colorPrimary">
+
         <TextView
 
             android:layout_height="wrap_content"
@@ -17,13 +19,15 @@
             android:textColor="@color/colorAccent"
             android:text="@string/app_name"
             android:layout_gravity="center"
-            android:textAppearance="?android:attr/textAppearanceSmall"/>
+            android:textAppearance="?android:attr/textAppearanceSmall" />
     </FrameLayout>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/layout_width"
         android:layout_weight="1"
         android:background="@color/Background">
+
         <ListView
             android:id="@+id/widget_list"
             android:layout_width="match_parent"
@@ -35,13 +39,14 @@
             android:layout_marginEnd="@dimen/marginStartEnd"
 
             />
+
         <TextView
             android:id="@+id/empty"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:textAppearance="?android:textAppearanceLarge"
             android:gravity="center"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
     </FrameLayout>
 

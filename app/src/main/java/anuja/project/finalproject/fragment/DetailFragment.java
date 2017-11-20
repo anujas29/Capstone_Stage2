@@ -10,17 +10,19 @@ import anuja.project.finalproject.R;
  * Created by USER on 20-10-2017.
  */
 
-public class DetailFragment  extends AppCompatActivity {
+public class DetailFragment extends AppCompatActivity {
 
     String TAG = DetailFragment.class.getSimpleName();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG,"Inside onCreate......");
+        Log.d(TAG, "Inside onCreate......");
         setContentView(R.layout.detail_fragment);
         getSupportFragmentManager().beginTransaction().
                 replace(R.id.detailFragment, new DetailActivity()).commit();
     }
+
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();

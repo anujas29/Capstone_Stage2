@@ -6,13 +6,13 @@ package anuja.project.finalproject.rest;
 
 public class Webhose {
 
-    public static final String BASE_URL="http://webhose.io/productFilter";
+    public static final String BASE_URL = "http://webhose.io/productFilter";
     public static final String TOKEN = "token";
     public static final String API_KEY = "YOUR_API_KEY";
     public static final String FORMAT = "format";
     public static final String FORMAT_VALUE = "json";
     public static final String QUERY = "q";
-    public static final String QUERY_VALUE="(name:dresses)";
+    public static final String QUERY_VALUE = "(name:dresses)";
     public static final String ON_SALE = "on_sale";
     public static final String ON_SALE_VALUE = "true";
     public static final String SIZE = "size";

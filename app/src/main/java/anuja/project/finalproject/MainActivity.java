@@ -34,15 +34,15 @@ public class MainActivity extends AppCompatActivity implements SaleAdapter.CallB
     public static boolean isTablet = false;
 
     @BindView(R.id.tabs)
-     TabLayout mTabs;
+    TabLayout mTabs;
     @BindView(R.id.toolbar)
-     Toolbar mToolbar;
+    Toolbar mToolbar;
     @BindView(R.id.viewpager)
-     ViewPager mViewPager;
-    private  MyPagerAdapter mMyPagerAdapter;
+    ViewPager mViewPager;
+    private MyPagerAdapter mMyPagerAdapter;
 
     private List<Fragment> mFragmentList = new ArrayList<>();
-    private List<String> mFragmentTitleList=new ArrayList<>();
+    private List<String> mFragmentTitleList = new ArrayList<>();
 
 
     @Override
@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements SaleAdapter.CallB
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.action_settings:
                 startActivity(new Intent(this, SettingActivity.class));
                 return true;
@@ -72,19 +72,19 @@ public class MainActivity extends AppCompatActivity implements SaleAdapter.CallB
         setSupportActionBar(mToolbar);
         setupMyPager(mViewPager);
         mTabs.setupWithViewPager(mViewPager);
-        Cursor countCursor =this.getContentResolver().query(ProductContract.ProductEntry.CONTENT_URI,
-                new String[] {"count(*) AS count"},
+        Cursor countCursor = this.getContentResolver().query(ProductContract.ProductEntry.CONTENT_URI,
+                new String[]{"count(*) AS count"},
                 null,
                 null,
                 null);
         countCursor.moveToFirst();
         int count = countCursor.getInt(0);
-        Log.e(TAG, "No of data present... = "+count);
+        Log.e(TAG, "No of data present... = " + count);
 
-        if(count == 0){
+        if (count == 0) {
             Log.e(TAG, "Calling Sync.....");
             SyncAdapter.Sync(this);
-        }else {
+        } else {
             Log.e(TAG, "Calling initializeAdapter.....");
             SyncAdapter.initializeAdapter(this);
         }
@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements SaleAdapter.CallB
 
     }
 
-    private void setupMyPager(ViewPager viewPager){
+    private void setupMyPager(ViewPager viewPager) {
 
         mFragmentList.add(new SaleFragment());
         mFragmentList.add(new LocalSaleFragment());
@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements SaleAdapter.CallB
         mFragmentTitleList.add("Sale");
         mFragmentTitleList.add("Local Sale");
         mFragmentTitleList.add("Favourites");
-        mMyPagerAdapter = new MyPagerAdapter(getSupportFragmentManager(),mFragmentList,mFragmentTitleList);
+        mMyPagerAdapter = new MyPagerAdapter(getSupportFragmentManager(), mFragmentList, mFragmentTitleList);
         viewPager.setAdapter(mMyPagerAdapter);
     }
 

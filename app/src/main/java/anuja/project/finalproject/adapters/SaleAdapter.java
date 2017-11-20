@@ -24,21 +24,20 @@ import butterknife.ButterKnife;
  * Created by USER on 20-10-2017.
  */
 
-public class SaleAdapter extends RecyclerView.Adapter<SaleAdapter.MyViewHolder>
-{
+public class SaleAdapter extends RecyclerView.Adapter<SaleAdapter.MyViewHolder> {
     String TAG = SaleAdapter.class.getSimpleName();
     CursorAdapter cursorAdapter;
     Context mContext;
 
 
-    public SaleAdapter(Context context, Cursor c){
-        mContext=context;
-        cursorAdapter = new CursorAdapter(context,c,0) {
+    public SaleAdapter(Context context, Cursor c) {
+        mContext = context;
+        cursorAdapter = new CursorAdapter(context, c, 0) {
 
             @Override
             public View newView(Context context, Cursor cursor, ViewGroup parent) {
-                View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item,parent,false);
-                MyViewHolder myviewHolder = new MyViewHolder(v,mContext,cursorAdapter);
+                View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item, parent, false);
+                MyViewHolder myviewHolder = new MyViewHolder(v, mContext, cursorAdapter);
                 v.setTag(myviewHolder);
                 return v;
             }
@@ -51,34 +50,34 @@ public class SaleAdapter extends RecyclerView.Adapter<SaleAdapter.MyViewHolder>
                         ProductContract.ProductEntry.COLUMN_TITLE)));
                 viewHolder.siteName.setText(cursor.getString(cursor.getColumnIndex(ProductContract.ProductEntry.COLUMN_SITE)));
 
-                if(cursor.getString(cursor.getColumnIndex(ProductContract.ProductEntry.COLUMN_IMAGE))!= null &&
-                        cursor.getString(cursor.getColumnIndex(ProductContract.ProductEntry.COLUMN_IMAGE)).length()>=1){
+                if (cursor.getString(cursor.getColumnIndex(ProductContract.ProductEntry.COLUMN_IMAGE)) != null &&
+                        cursor.getString(cursor.getColumnIndex(ProductContract.ProductEntry.COLUMN_IMAGE)).length() >= 1) {
                     Picasso.with(context).load(cursor.getString(cursor.getColumnIndex(
                             ProductContract.ProductEntry.COLUMN_IMAGE
                     ))).fit().into(viewHolder.imageView);
-                }else{
+                } else {
                     viewHolder.imageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.sale_default));
                 }
             }
         };
     }
 
-    public void swap(Cursor c){
+    public void swap(Cursor c) {
         cursorAdapter.swapCursor(c);
         notifyDataSetChanged();
     }
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = cursorAdapter.newView(mContext,cursorAdapter.getCursor(),parent);
-        return new MyViewHolder(view,mContext,cursorAdapter);
+        View view = cursorAdapter.newView(mContext, cursorAdapter.getCursor(), parent);
+        return new MyViewHolder(view, mContext, cursorAdapter);
     }
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
 
         cursorAdapter.getCursor().moveToPosition(position);
-        cursorAdapter.bindView(holder.itemView,mContext,cursorAdapter.getCursor());
+        cursorAdapter.bindView(holder.itemView, mContext, cursorAdapter.getCursor());
 
     }
 
@@ -87,8 +86,7 @@ public class SaleAdapter extends RecyclerView.Adapter<SaleAdapter.MyViewHolder>
         return cursorAdapter.getCount();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder
-    {
+    public class MyViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.image_view)
         ImageView imageView;
         @BindView(R.id.item_name)
@@ -105,18 +103,18 @@ public class SaleAdapter extends RecyclerView.Adapter<SaleAdapter.MyViewHolder>
 
         public MyViewHolder(View itemView, Context con, CursorAdapter cursor) {
             super(itemView);
-            ButterKnife.bind(this,itemView);
-            mCursorAdapter=cursor;
+            ButterKnife.bind(this, itemView);
+            mCursorAdapter = cursor;
             mContext = con;
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Cursor cursor =(Cursor) mCursorAdapter.getItem(getAdapterPosition());
+                    Cursor cursor = (Cursor) mCursorAdapter.getItem(getAdapterPosition());
                     long index = cursor.getLong(cursor.getColumnIndex(ProductContract.ProductEntry._ID));
-                    Uri selectedUri= ProductContract.ProductEntry.getUriWithId(index);
+                    Uri selectedUri = ProductContract.ProductEntry.getUriWithId(index);
                     Intent intent = new Intent(mContext, DetailFragment.class);
-                    ((CallBack)mContext).ItemSelected(selectedUri);
+                    ((CallBack) mContext).ItemSelected(selectedUri);
                 }
             });
 

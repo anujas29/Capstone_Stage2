@@ -28,6 +28,4 @@ public class HelpReadMe {
     http://coderzpassion.com/working-appbarlayout-like-whatsapp/*/
 
 
-
-
 }

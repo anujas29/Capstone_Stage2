@@ -44,7 +44,7 @@ public class LocalSaleFragment extends Fragment implements LoaderManager.LoaderC
         View rootView = inflater.inflate(R.layout.fab_recycler_view, container, false);
         ButterKnife.bind(this, rootView);
 
-        mSaleAdapter =new SaleAdapter(getActivity(),null);
+        mSaleAdapter = new SaleAdapter(getActivity(), null);
         recyclerView.setAdapter(mSaleAdapter);
 
         mLayout = new LinearLayoutManager(getActivity());
@@ -55,36 +55,35 @@ public class LocalSaleFragment extends Fragment implements LoaderManager.LoaderC
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
-        Log.e(TAG," Inside onCreateLoader....");
+        Log.e(TAG, " Inside onCreateLoader....");
         Uri uri = ProductContract.ProductEntry.CONTENT_URI;
         return new CursorLoader(getActivity()
                 , uri
-                ,ProductContract.ProductEntry.SALE_COLUMNS
-                ,ProductContract.ProductEntry.COLUMN_LOCAL_SALE+" = ?"
-                ,new String[]{String.valueOf(1)}
-                ,ProductContract.ProductEntry._ID+" ASC");
-
+                , ProductContract.ProductEntry.SALE_COLUMNS
+                , ProductContract.ProductEntry.COLUMN_LOCAL_SALE + " = ?"
+                , new String[]{String.valueOf(1)}
+                , ProductContract.ProductEntry._ID + " ASC");
 
 
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        Log.e(TAG,"Inside onLoadFinished datasize = " + data.getCount());
+        Log.e(TAG, "Inside onLoadFinished datasize = " + data.getCount());
         mSaleAdapter.swap(data);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        Log.e(TAG," Inside onLoaderReset....");
+        Log.e(TAG, " Inside onLoaderReset....");
         mSaleAdapter.swap(null);
 
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        Log.e(TAG," Inside onActivityCreated....");
-        getLoaderManager().initLoader(CURSOR_LOADER,null,this);
+        Log.e(TAG, " Inside onActivityCreated....");
+        getLoaderManager().initLoader(CURSOR_LOADER, null, this);
         super.onActivityCreated(savedInstanceState);
     }
 

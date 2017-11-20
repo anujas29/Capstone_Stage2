@@ -10,8 +10,7 @@ import java.util.List;
  * Created by USER on 17-10-2017.
  */
 
-public class MyPagerAdapter extends FragmentPagerAdapter
-{
+public class MyPagerAdapter extends FragmentPagerAdapter {
 
     private final List<Fragment> FragmentList;
     private final List<String> FragmentTitle;
@@ -21,6 +20,7 @@ public class MyPagerAdapter extends FragmentPagerAdapter
         this.FragmentList = FragmentList;
         this.FragmentTitle = FragmentTitle;
     }
+
     @Override
     public Fragment getItem(int position) {
         return FragmentList.get(position);

@@ -19,26 +19,23 @@ public class ProductModel {
     public String mCurrency;
     public String mOffer;
     //public String mImage;
-    public  List<String> mImage;
+    public List<String> mImage;
 
 
-    public ProductModel(String uuid,String url,String site,String title,String name,String description,String LastChange, String Price,String Currency,String Offer){
+    public ProductModel(String uuid, String url, String site, String title, String name, String description, String LastChange, String Price, String Currency, String Offer) {
         mUUID = uuid;
-        mUrl=url;
-        mSite=site;
-        mTitle=title;
-        mName=name;
-        mDescription=description;
+        mUrl = url;
+        mSite = site;
+        mTitle = title;
+        mName = name;
+        mDescription = description;
         mLastChange = LastChange;
         mPrice = Price;
         mCurrency = Currency;
-        mOffer= Offer;
+        mOffer = Offer;
 
 
     }
-
-
-
 
 
 }

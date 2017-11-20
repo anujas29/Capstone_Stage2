@@ -3,11 +3,11 @@
     <string name="image_description">this is a product image</string>
     <string name="product_description">this is a product name</string>
     <string name="share">Share</string>
-    <string name ="removeFromFavorite">Remove From Favorite</string>
+    <string name="removeFromFavorite">Remove From Favorite</string>
     <string name="title_action_setting">Settings</string>
-    <string name ="location">keyLocation</string>
-    <string name ="title_location">Set Your Current Location</string>
-    <string name ="default_location">US</string>
+    <string name="location">keyLocation</string>
+    <string name="title_location">Set Your Current Location</string>
+    <string name="default_location">US</string>
     <string name="empty">List is Empty</string>
     <string name="Setting_name">Settings</string>
     <string name="Site_name">This is site name</string>
@@ -22,6 +22,8 @@
     <string name="Addedasfab">Mark as favourite....</string>
     <string name="NoInternet">No Internet Access.. Plz turn on your internet and restart app !!!</string>
 
+    <string name="txtprice">Price</string>
+    <string name="txtpriceoffer">Offer Price</string>
 
 
 </resources>

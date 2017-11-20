@@ -2,10 +2,10 @@ apply plugin: 'com.android.application'
 
 android {
     signingConfigs {
-        config {
-            keyAlias 'key'
+        config1 {
+            keyAlias 'key4'
             keyPassword 'anuja29'
-            storeFile file('D:/Capston/FinalProject/keystore.jks')
+            storeFile file("$rootDir/keystore4.jks")
             storePassword 'anuja29'
         }
     }
@@ -23,7 +23,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.config
+            signingConfig signingConfigs.config1
         }
     }
 }

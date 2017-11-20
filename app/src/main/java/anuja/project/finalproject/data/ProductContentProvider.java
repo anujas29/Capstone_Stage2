@@ -13,7 +13,7 @@ import android.net.Uri;
  * Created by USER on 19-10-2017.
  */
 
-public class ProductContentProvider  extends ContentProvider {
+public class ProductContentProvider extends ContentProvider {
 
     private Context mContext;
     private static DbHelper mDbHelper;
@@ -43,21 +43,22 @@ public class ProductContentProvider  extends ContentProvider {
         mDbHelper = new DbHelper(mContext);
         return true;
     }
+
     /*
      * Return no type for MIME type
      */
     @Override
-    public String getType(Uri uri)
-    {
-        switch(sUriMatcher.match(uri)){
+    public String getType(Uri uri) {
+        switch (sUriMatcher.match(uri)) {
             case SALE://(DIR) returns multiple rows
                 return ProductContract.ProductEntry.CONTENT_TYPE;
             case SALE_WITH_ID:
                 return ProductContract.ProductEntry.CONTENT_ITEM_TYPE;
             default:
-                throw new UnsupportedOperationException("Unknown uri: "+uri);
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
     }
+
     /*
      * query() always returns no results
      *
@@ -72,15 +73,15 @@ public class ProductContentProvider  extends ContentProvider {
 
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
         Cursor returnedCursor;
-        switch (sUriMatcher.match(uri)){
+        switch (sUriMatcher.match(uri)) {
 
-            case SALE:{
-                returnedCursor = db.query(ProductContract.ProductEntry.TABLE_NAME,projection,selection,selectionArgs,null,null,sortOrder);
+            case SALE: {
+                returnedCursor = db.query(ProductContract.ProductEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
                 break;
             }
-            case SALE_WITH_ID:{
+            case SALE_WITH_ID: {
                 long _id = Long.valueOf(uri.getLastPathSegment());
-                returnedCursor = db.query(ProductContract.ProductEntry.TABLE_NAME,projection,""+ ProductContract.ProductEntry._ID + "=?",new String[]{String.valueOf(_id)},null,null,sortOrder);
+                returnedCursor = db.query(ProductContract.ProductEntry.TABLE_NAME, projection, "" + ProductContract.ProductEntry._ID + "=?", new String[]{String.valueOf(_id)}, null, null, sortOrder);
                 //the sent id paremerter is actually the index of the clicked mews in the arrayList the holds the movies + 1
                 // since the saved news in the database are sorted the same sort of the arrayList that holds the news
                 break;
@@ -93,6 +94,7 @@ public class ProductContentProvider  extends ContentProvider {
         //this allow the content provider to easily tell the UI when th cursor changes
         return returnedCursor;
     }
+
     /*
      * insert() always returns null (no URI)
      */
@@ -101,12 +103,12 @@ public class ProductContentProvider  extends ContentProvider {
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
         Uri returnedUri;
         long _id;
-        switch(sUriMatcher.match(uri)){
-            case SALE:{
-                _id=db.insert(ProductContract.ProductEntry.TABLE_NAME,null,values);
-                if(_id > 0){
+        switch (sUriMatcher.match(uri)) {
+            case SALE: {
+                _id = db.insert(ProductContract.ProductEntry.TABLE_NAME, null, values);
+                if (_id > 0) {
                     returnedUri = ProductContract.ProductEntry.getUriWithId(_id);
-                }else {
+                } else {
                     throw new SQLiteException("Failed to insert into database");
                 }
                 break;
@@ -119,33 +121,35 @@ public class ProductContentProvider  extends ContentProvider {
         mContext.getContentResolver().notifyChange(uri, null);
         return returnedUri;
     }
+
     /*
      * delete() always returns "no rows affected" (0)
      */
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        SQLiteDatabase db= mDbHelper.getWritableDatabase();
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
         int rowsDeleted;
         // this makes delete all rows return the number of rows deleted
-        if ( null == selection ) selection = "1";
-        switch(sUriMatcher.match(uri)){
-            case SALE:{
-                rowsDeleted = db.delete(ProductContract.ProductEntry.TABLE_NAME,selection,selectionArgs);
+        if (null == selection) selection = "1";
+        switch (sUriMatcher.match(uri)) {
+            case SALE: {
+                rowsDeleted = db.delete(ProductContract.ProductEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             }
-            case SALE_WITH_ID:{
+            case SALE_WITH_ID: {
                 long _id = Long.valueOf(uri.getLastPathSegment());
-                rowsDeleted=db.delete(ProductContract.ProductEntry.TABLE_NAME,
-                        ""+ ProductContract.ProductEntry._ID+"= ?",new String[]{String.valueOf(_id)});
+                rowsDeleted = db.delete(ProductContract.ProductEntry.TABLE_NAME,
+                        "" + ProductContract.ProductEntry._ID + "= ?", new String[]{String.valueOf(_id)});
                 break;
             }
-            default:{
+            default: {
                 throw new UnsupportedOperationException("Unknown Uri " + uri);
             }
         }
         mContext.getContentResolver().notifyChange(uri, null);
         return rowsDeleted;
     }
+
     /*
      * update() always returns "no rows affected" (0)
      */
@@ -157,12 +161,12 @@ public class ProductContentProvider  extends ContentProvider {
 
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
         int rows_affected;
-        switch (sUriMatcher.match(uri)){
-            case SALE_WITH_ID:{
+        switch (sUriMatcher.match(uri)) {
+            case SALE_WITH_ID: {
                 rows_affected = db.update(ProductContract.ProductEntry.TABLE_NAME
-                        ,values
-                        , ProductContract.ProductEntry._ID +" = ?"
-                        ,new String[]{uri.getLastPathSegment()});
+                        , values
+                        , ProductContract.ProductEntry._ID + " = ?"
+                        , new String[]{uri.getLastPathSegment()});
                 break;
             }
             default: {
@@ -176,19 +180,19 @@ public class ProductContentProvider  extends ContentProvider {
     @Override
     public int bulkInsert(Uri uri, ContentValues[] values) {
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
-        switch(sUriMatcher.match(uri)){
-            case SALE:{
+        switch (sUriMatcher.match(uri)) {
+            case SALE: {
                 db.beginTransaction();
                 int returnCount = 0;
-                try{
-                    for(ContentValues value : values){
-                        long _id = db.insert(ProductContract.ProductEntry.TABLE_NAME,null,value);
-                        if(_id != -1){
+                try {
+                    for (ContentValues value : values) {
+                        long _id = db.insert(ProductContract.ProductEntry.TABLE_NAME, null, value);
+                        if (_id != -1) {
                             returnCount++;
                         }
                     }
                     db.setTransactionSuccessful();
-                }finally {
+                } finally {
                     db.endTransaction();
                 }
                 mContext.getContentResolver().notifyChange(uri, null);
